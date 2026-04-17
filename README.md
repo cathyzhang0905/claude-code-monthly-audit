@@ -49,6 +49,8 @@ Claude will:
 - **Existing users**: audit finds expired configs, noisy hooks, unused skills, duplicate rules, etc.
 - **New users (few/no configs yet)**: audit gently suggests which extension points to start with, based on what you already have. No overwhelming "create all 6 extension points" — the recommendation scales with your current setup maturity.
 
+**See it in action**: [examples/new-user.md](examples/new-user.md) — simulated audit output for a brand-new user, plus curated community marketplace / MCP recommendations for when you're ready to grow.
+
 ## Recommended cadence
 
 **Monthly**. The first of each month is a good anchor.
