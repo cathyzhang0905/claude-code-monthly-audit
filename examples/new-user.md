@@ -138,6 +138,23 @@ Enable via `~/.claude/settings.json`'s `extraKnownMarketplaces` field, then sele
 
 _(If you built something useful, open a PR adding it to this table — that's how community knowledge compounds.)_
 
+### Curated Picks from `awesome-claude-code`
+
+_Sourced from [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) — the most authoritative community-curated list for Claude Code (covers skills, hooks, slash-commands, agents, and plugins)._
+
+6 picks for new users, chosen for **universality of pain + low entry barrier**:
+
+| Pick | Solves | Link |
+|---|---|---|
+| **Superpowers** | All-in-one bundle: planning / testing / debugging / writing — install once, skip the "which skill to pick" paralysis | [obra/superpowers](https://github.com/obra/superpowers) |
+| **`/commit` slash-command** | Auto-generates conventional-commit messages — removes the "how should I phrase this commit" friction | [evmts/tevm-monorepo](https://github.com/evmts/tevm-monorepo) |
+| **CC Usage** | Dashboard for token spend + cost — answers the new-user question "am I burning money?" | [ryoppippi/ccusage](https://github.com/ryoppippi/ccusage) |
+| **`/context-prime` slash-command** | One command to make Claude systematically understand a new codebase — lifesaver when onboarding to an unfamiliar repo | [elizaOS/elizaos.github.io](https://github.com/elizaOS/elizaos.github.io) |
+| **Dippy** (hook) | Auto-approves safe commands, only prompts for destructive ones — reduces permission-fatigue without `bypassPermissions` blunder | [ldayton/Dippy](https://github.com/ldayton/Dippy) |
+| **Claude Code Handbook** | Curated best-practices blog — read-alongside reference for the first month | [nikiforovall.blog/claude-code-rules](https://nikiforovall.blog/claude-code-rules/) |
+
+**Want more?** The full list has 200+ entries across skills / hooks / slash-commands / agent orchestrators / applications / plugins. Browse [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) when you have a specific need — don't install things "just in case".
+
 ### Where to discover more
 
 - **Official docs**: [docs.anthropic.com/claude/docs/claude-code](https://docs.anthropic.com/claude/docs/claude-code)
