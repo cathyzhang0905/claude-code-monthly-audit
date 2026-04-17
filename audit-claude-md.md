@@ -13,22 +13,34 @@ description: 月度 Claude Code 配置审计 — 检查 CLAUDE.md / Rules / Skil
 
 ## 审计流程(按顺序执行)
 
+### Step 0: 检测 Claude Code 配置目录
+
+先跑 bash 命令:
+
+```bash
+echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+```
+
+把返回的路径记为 `$CLAUDE_DIR`。后续所有 `$CLAUDE_DIR/...` 路径都用这个值。
+
+**为什么**:用户可能设置了 `CLAUDE_CONFIG_DIR` 环境变量把配置目录移到别处(跨机器 sync、多账户隔离、dotfiles 管理等)。直接假设 `~/.claude/` 会漏掉这类用户的配置。
+
 ### Step 1: 上下文占用体检
 
 先跑 `/context` 命令,看当前 session 的 context 占用情况。如果 context 占用 > 40%,标红警告——说明静态配置可能过度膨胀。
 
 ### Step 2: 读取核心配置文件
 
-读取以下文件,不要跳过任何一个:
+读取以下文件。**如果某个路径不存在**(比如用户没建 agents 或没配 MCP),**标记为"未使用该扩展点",跳过该段审计,不要当作错误报告**。
 
-- `~/.claude/CLAUDE.md`(全局个人契约)
-- Workspace 的 `CLAUDE.md`(如果存在)
-- `~/.claude/rules/*.md`(全局 rules)
-- `.claude/rules/*.md`(项目级 rules,如果存在)
-- `~/.claude/settings.json` 和 `.claude/settings.local.json`(hook 配置)
-- 列出 `~/.claude/skills/` 下的自建 skill 目录名
-- 列出 `~/.claude/agents/` 下的 agent 定义文件名
-- 读取 `~/.claude/.mcp.json`(MCP servers,**严禁打印任何 token/key/secret**)
+- `$CLAUDE_DIR/CLAUDE.md`(全局个人契约)
+- Workspace 的 `CLAUDE.md`(如果存在,相对当前 workspace)
+- `$CLAUDE_DIR/rules/*.md`(全局 rules)
+- `.claude/rules/*.md`(项目级 rules,相对当前 workspace)
+- `$CLAUDE_DIR/settings.json` 和 `.claude/settings.local.json`(hook 配置)
+- 列出 `$CLAUDE_DIR/skills/` 下的自建 skill 目录名
+- 列出 `$CLAUDE_DIR/agents/` 下的 agent 定义文件名
+- 读取 `$CLAUDE_DIR/.mcp.json`(MCP servers,**严禁打印任何 token/key/secret**)
 
 ### Step 3: 按 Thoughtworks 6 层清单出具审计报告
 

@@ -55,6 +55,13 @@ You can also trigger it opportunistically — e.g., after you've been heavily it
 - The command **will not modify any files**. Audit reports only. You decide what to change.
 - Secrets (tokens, API keys, app secrets) in MCP configs are **explicitly excluded** from output.
 
+## Compatibility
+
+- **Default install** (`~/.claude/` on macOS/Linux): ✅ works out of the box
+- **Custom `CLAUDE_CONFIG_DIR` env var**: ✅ auto-detected via Step 0
+- **Missing extension point directories** (e.g., no `agents/` because you don't use custom agents): ✅ gracefully skipped, not reported as error
+- **Windows (native, non-WSL)**: ⚠️ path resolution may differ; use WSL for best results
+
 ## Language
 
 The command is written in Chinese. The audit report Claude produces will follow the language of your conversation (ask in English → report in English, ask in Chinese → report in Chinese).
