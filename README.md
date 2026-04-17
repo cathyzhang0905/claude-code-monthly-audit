@@ -40,9 +40,14 @@ In Claude Code, type:
 Claude will:
 
 1. Read your `CLAUDE.md`, `rules/`, `settings.json`, `skills/`, `agents/`, `.mcp.json`
-2. Output a red/yellow/green report per extension point (CLAUDE.md / Rules / Skills / Subagents / Hooks / MCP Servers)
-3. Produce a prioritized action list (P0 / P1 / P2)
+2. Output a red / yellow / green / 💡 report per extension point (CLAUDE.md / Rules / Skills / Subagents / Hooks / MCP Servers)
+3. Produce a prioritized action list (P0 / P1 / P2 + 💡 suggestions for unused extension points)
 4. Suggest a next audit date (default: +30 days)
+
+### For new users vs existing users
+
+- **Existing users**: audit finds expired configs, noisy hooks, unused skills, duplicate rules, etc.
+- **New users (few/no configs yet)**: audit gently suggests which extension points to start with, based on what you already have. No overwhelming "create all 6 extension points" — the recommendation scales with your current setup maturity.
 
 ## Recommended cadence
 

@@ -31,7 +31,16 @@ echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 
 ### Step 2: 读取核心配置文件
 
-读取以下文件。**如果某个路径不存在**(比如用户没建 agents 或没配 MCP),**标记为"未使用该扩展点",跳过该段审计,不要当作错误报告**。
+读取以下文件。**如果某个路径不存在或为空**(比如刚装 Claude Code 的新用户可能没建 CLAUDE.md、没配 MCP、没建 skills/ agents/):
+
+- **不要报错**,也不要当作故障
+- 在审计报告对应段落标记 💡 **"未使用此扩展点(unused)"**
+- 附 1-2 句**教育说明**:这个扩展点能做什么 + 典型值得建立的场景 + 建议的起点
+- 根据用户当前已有配置温和判断推荐力度:
+  - 用户**已有较多 rules/skills** → 说明他重视 config,可以更主动建议 agents / hooks
+  - 用户**只有最基础甚至没 CLAUDE.md** → 温和推荐**从 CLAUDE.md 开始**,不要一口气推荐 5 个扩展点
+
+**要读取的文件**:
 
 - `$CLAUDE_DIR/CLAUDE.md`(全局个人契约)
 - Workspace 的 `CLAUDE.md`(如果存在,相对当前 workspace)
@@ -42,6 +51,17 @@ echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 - 列出 `$CLAUDE_DIR/agents/` 下的 agent 定义文件名
 - 读取 `$CLAUDE_DIR/.mcp.json`(MCP servers,**严禁打印任何 token/key/secret**)
 
+**每个扩展点未使用时的教育建议模板**(实际输出时调整措辞,不要死搬):
+
+| 扩展点 | 做什么的 | 什么时候值得建 |
+|---|---|---|
+| CLAUDE.md | 全局/项目级偏好 + 禁做清单 | 任何 Claude Code 用户的起点。3-5 条你希望每次对话都遵守的规则 |
+| Rules | 模块化偏好(主题化的 CLAUDE.md) | CLAUDE.md 超过 20 行,想按主题拆分(写作偏好 / 研究偏好分开) |
+| Skills | 可复用的任务流程文档 | 反复做的同一件事(写作、竞品分析、PRD review 等) |
+| Subagents | 独立 context 的专业角色 | 需要"第三方视角"(代码审查员 / 写作 critic)或权限隔离 |
+| Hooks | 事件触发的确定性动作 | 某件事必须 100% 发生(自动注入 STATUS、编辑后格式化等) |
+| MCP Servers | 外部工具的结构化接入 | 反复需要访问同一外部系统(Notion、Slack、飞书等) |
+
 ### Step 3: 按 Thoughtworks 6 层清单出具审计报告
 
 对每一层,输出以下结构:
@@ -51,13 +71,16 @@ echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 
 **当前状态**: <1 句话>
 
-**发现的问题**(按严重度排序):
+**发现的问题 / 观察**(按严重度排序):
 - 🔴 <critical issue, if any>
 - 🟡 <warning, if any>
-- 🟢 <healthy>
+- 🟢 <healthy, if all good>
+- 💡 <educational note, if this extension point is unused — explain what it is + when worth creating>
 
 **建议动作**:
 - [ ] <actionable suggestion>
+   - 对 🔴 🟡 → 是修复动作
+   - 对 💡 → 是"考虑建立 X 用于 Y 场景",语气建议而非命令
 ```
 
 涵盖:CLAUDE.md / Rules / Skills / Subagents / Hooks / MCP Servers 六层。
@@ -77,25 +100,30 @@ echo "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 #### 第一层:红绿灯总评(一眼看清状态)
 
 ```
-- CLAUDE.md: 🟢 / 🟡 / 🔴 + 一句话
-- Rules: 🟢 / 🟡 / 🔴 + 一句话
-- Skills: 🟢 / 🟡 / 🔴 + 一句话
-- Subagents: 🟢 / 🟡 / 🔴 + 一句话
-- Hooks: 🟢 / 🟡 / 🔴 + 一句话
-- MCP Servers: 🟢 / 🟡 / 🔴 + 一句话
+- CLAUDE.md: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
+- Rules: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
+- Skills: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
+- Subagents: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
+- Hooks: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
+- MCP Servers: 🟢 / 🟡 / 🔴 / 💡(unused) + 一句话
 ```
 
 #### 第二层:行动清单(按优先级排序)
 
 ```
 ## P0 (本周就改)
-- [ ] <action>
+- [ ] <action for 🔴 issues>
 
 ## P1 (本月改)
-- [ ] <action>
+- [ ] <action for 🟡 issues>
 
 ## P2 (下次再看)
 - [ ] <action>
+
+## 💡 建议考虑(未使用的扩展点)
+- [ ] <对 💡 unused 扩展点的温和建议,按当前配置成熟度决定推荐力度>
+- 新手用户(只有基础 CLAUDE.md 或更少)→ 只推荐 1-2 个最基础的起点,不要一口气 5 个
+- 进阶用户(已有 rules/skills)→ 可以列全,让他选
 ```
 
 ## 硬规则
